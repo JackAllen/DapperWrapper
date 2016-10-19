@@ -49,7 +49,7 @@ public class Employee {
 }
 
 public long AddEmployee(long companyId, Employee employee) {
-    const string Sql = "EXEC [AddEmployeeCompany] @CompanyId, @Employee"; // RETURNS EMPLOYEE ID
+    const string Sql = "EXEC [AddEmployee] @CompanyId, @Employee"; // RETURNS EMPLOYEE ID
 
     var parameters = new {
         CompanyId = companyId,
