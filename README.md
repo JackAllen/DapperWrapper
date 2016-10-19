@@ -33,12 +33,22 @@ public Company GetCompany(long companyId) {
 }
 ```
 
+## Tvp Extensions
+```csharp
+public static SqlMapper.ICustomQueryParameter ToTvp<T>(this T obj, string name)
+```
+```csharp
+public static SqlMapper.ICustomQueryParameter ToTvp<T>(this List<T> objects, string name)
+```
+```csharp
+public static SqlMapper.ICustomQueryParameter ToSingleTypeTvp<T>(this List<T> objects, string name, string columnName)
+```
+
 Example Usage
 ```csharp
 using Dapper.Wrapper;
 
 public class Employee {
-    [TvpProperty]
     public long Id { get; set; }
     
     [TvpProperty(Name = "Forename")]
@@ -53,9 +63,31 @@ public long AddEmployee(long companyId, Employee employee) {
 
     var parameters = new {
         CompanyId = companyId,
-        Employee = emplyoee.ToTvp("EmployeeTvp")
+        Employee = employee.ToTvp("EmployeeTvp")
     };
     
     return this.DapperWrapper.Get<long>(Sql, parameters);
+}
+
+public List<long> AddEmployees(long companyId, List<Employee> employees) {
+    const string Sql = "EXEC [AddEmployees] @CompanyId, @Employees"; // RETURNS EMPLOYEE IDs
+
+    var parameters = new {
+        CompanyId = companyId,
+        Employees = employees.ToTvp("EmployeeTvp")
+    };
+    
+    return this.DapperWrapper.GetList<long>(Sql, parameters);
+}
+
+public void DeleteEmployees(long companyId, List<long> employeeIds) {
+    const string Sql = "EXEC [DeleteEmployees] @CompanyId, @EmployeeIds";
+
+    var parameters = new {
+        CompanyId = companyId,
+        EmployeeIds = employeeIds.ToTvp("IDArrayTvp", "ID")
+    };
+    
+    this.DapperWrapper.Put(Sql, parameters);
 }
 ```
