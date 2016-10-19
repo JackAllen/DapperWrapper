@@ -44,8 +44,7 @@ public static SqlMapper.ICustomQueryParameter ToTvp<T>(this List<T> objects, str
 public static SqlMapper.ICustomQueryParameter ToSingleTypeTvp<T>(this List<T> objects, string name, string columnName)
 ```
 
-Example Usage
-```csharp
+```csharp 
 using Dapper.Wrapper;
 
 public class Employee {
@@ -57,6 +56,11 @@ public class Employee {
     [TvpProperty]
     public string Surname { get; set; }
 }
+```
+
+Example Usage
+```csharp
+using Dapper.Wrapper;
 
 public long AddEmployee(long companyId, Employee employee) {
     const string Sql = "EXEC [AddEmployee] @CompanyId, @Employee"; // RETURNS EMPLOYEE ID
