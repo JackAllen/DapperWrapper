@@ -32,3 +32,30 @@ public Company GetCompany(long companyId) {
     });
 }
 ```
+
+Example Usage
+```csharp
+using Dapper.Wrapper;
+
+public class Employee {
+    [TvpProperty]
+    public long Id { get; set; }
+    
+    [TvpProperty(Name = "Forename")]
+    public string Firstname { get; set; }
+    
+    [TvpProperty]
+    public string Surname { get; set; }
+}
+
+public long AddEmployee(long companyId, Employee employee) {
+    const string Sql = "EXEC [AddEmployeeCompany] @CompanyId, @Employee"; // RETURNS EMPLOYEE ID
+
+    var parameters = new {
+        CompanyId = companyId,
+        Employee = emplyoee.ToTvp("EmployeeTvp")
+    };
+    
+    return this.DapperWrapper.Get<long>(Sql, parameters);
+}
+```
