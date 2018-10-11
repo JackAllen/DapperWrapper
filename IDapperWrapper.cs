@@ -11,6 +11,6 @@
 
         List<T> GetList<T>(string sql, object parameters);
 
-        void Put(string sql, object paramters);
+        void Put(string sql, object parameters);
     }
 }
